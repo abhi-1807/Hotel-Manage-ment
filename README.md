@@ -1,48 +1,123 @@
-Hotel Management System in C
-This simple console-based Hotel Management System is written in C and allows basic hotel functionalities such as booking rooms, ordering food, and generating customer bills. It's a great starter project for those learning C or exploring command-line applications.
-📋 Features
-- Room booking with predefined pricing
-- Normal Room (₹3000/day)
-- Deluxe Room (₹5000/day)
-- Suite Room (₹10000/day)
-- Food ordering from a restaurant-style menu
-- Calculation of food and room bills
-- Summary bill display with total charges
-Sure! Your hotel management program in C utilizes several foundational programming concepts. Here's a breakdown of the key ones:
+#include <stdio.h>
+#include <string.h>
 
-## 🔧 Core Concepts Used
+struct Customer {
+    char name[100];
+    int room_no;
+    int days;
+    float room_bill;
+    float food_bill;
+};
 
-### 1. **Structures (`struct`)**
-- Defines a custom data type `Customer` to store customer-related information like name, room number, number of days, room and food bills.
-- Helps group related variables under a single unit.
+struct Customer cust;
 
-### 2. **Functions**
-- Modularizes logic with separate functions:  
-  - `bookRoom()` – for handling room bookings  
-  - `orderFood()` – for managing food orders  
-  - `showBill()` – for displaying billing summary  
-- Improves code organization, readability, and reusability.
+void bookRoom() {
+	int i;
+    printf("Enter name: ");
+    scanf("%s", cust.name);
+    printf("1.Normal room\n");
+    printf("2.Delux room\n");
+    printf("3.Suite room\n");
+    scanf("%d",&i);
+    switch(i)
+    {
+    	case 1:{
+    		printf("Enter room number: ");
+    		scanf("%d", &cust.room_no);
+    		printf("Enter number of days: ");
+    		scanf("%d", &cust.days);
+    		printf("one day price of normal room is 3000 Rs");
+   	 		cust.room_bill = cust.days * 3000; 
+    		break;
+		}
+		case 2:{
+			printf("Enter room number: ");
+    		scanf("%d", &cust.room_no);
+    		printf("Enter number of days: ");
+    		scanf("%d", &cust.days);
+    		printf("one day price of delux room is 5000 Rs");
+    		cust.room_bill = cust.days * 5000; 
+			break;
+		}
+		case 3:{
+			printf("Enter room number: ");
+    		scanf("%d", &cust.room_no);
+    		printf("Enter number of days: ");
+    		scanf("%d", &cust.days);
+    		printf("one day price of suite room is 10000 Rs");
+    		cust.room_bill = cust.days * 10000; 
+			break;
+		}
+    		
+	}
+}
 
-### 3. **Control Flow**
-- **Loops**:  
-  - `do-while` loop in `orderFood()` for repeated food menu interaction  
-  - `do-while` loop in `main()` for continuous program operation until the user exits
-- **Switch-case**:  
-  - Used for selecting room type and food items based on user input.
+void orderFood() {
+    int choice, quantity;
+    float total = 0;
+    do {
+        printf("\n--- Restaurant Menu ---\n");
+        printf("1. Veg Burger - 180\n");
+        printf("2. Paneer Tikka - 220\n");
+        printf("3. Masala Dosa - 200\n");
+        printf("4. Paneer Butter Masala - 260\n");
+        printf("5. Kaju Curry - 270\n");
+        printf("6. Malai Kofta - 250\n");
+        printf("7. Veg Biryani - 300\n");
+        printf("8. Fulka Roti - 25\n");
+        printf("9. Tandoori Roti - 35\n");
+        printf("10. Exit\n");
 
-### 4. **User Input**
-- `scanf()` is used extensively to gather inputs from the user for names, room types, quantity, days, etc.
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
 
-### 5. **String Handling**
-- Uses `char name[100]` to store customer names with input via `scanf("%s", cust.name);`
+        if (choice >= 1 && choice <= 9) {
+            printf("Enter quantity: ");
+            scanf("%d", &quantity);
+        }
 
-### 6. **Arithmetic Operations**
-- Bill calculations use basic multiplication and addition logic:
-  - `cust.room_bill = cust.days * <rate>`
-  - `cust.food_bill += quantity * <food_rate>`
+        switch(choice) {
+            case 1: total += quantity * 180; break;
+            case 2: total += quantity * 220; break;
+            case 3: total += quantity * 200; break;
+            case 4: total += quantity * 260; break;
+            case 5: total += quantity * 270; break;
+            case 6: total += quantity * 250; break;
+            case 7: total += quantity * 300; break;
+            case 8: total += quantity * 25; break;
+            case 9: total += quantity * 35; break;
+        }
 
-### 7. **Global Variable Usage**
-- `struct Customer cust` is declared globally so it's accessible across all functions without passing it explicitly.
+    } while (choice != 10);
 
-### 8. **Console Input/Output**
-- Utilizes `printf()` for displaying information and `scanf()` for taking user input, which is key to any command-line based application.
+    cust.food_bill = total;
+}
+void showBill() {
+    printf("\n===== BILL SUMMARY =====\n");
+    printf("Name       : %s\n", cust.name);
+    printf("Room No.   : %d\n", cust.room_no);
+    printf("Days Stay  : %d\n", cust.days);
+    printf("Room Bill  : %.2f\n", cust.room_bill);
+    printf("Food Bill  : %.2f\n", cust.food_bill);
+    printf("Total Bill : %.2f\n", cust.room_bill + cust.food_bill);
+}
+
+int main() {
+    int option;
+    do {
+        printf("\n--- Hotel Management ---\n");
+        printf("1. Book Room\n");
+        printf("2. Order Food\n");
+        printf("3. Show Bill\n");
+        printf("4. Exit\n");
+        printf("Choose an option: ");
+        scanf("%d", &option);
+        if (option == 1) 
+		{
+			bookRoom();
+		}
+        else if (option == 2) orderFood();
+        else if (option == 3) showBill();
+    } while (option != 4);
+    return 0;
+}
